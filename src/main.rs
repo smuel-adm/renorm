@@ -1,6 +1,7 @@
 use std::env;
 use csv::ReaderBuilder;
 use serde::Deserialize;
+use std::path::Path;
 
 #[derive(Debug, Deserialize)]
 struct CSV {
@@ -19,6 +20,9 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     //dbg!(args);
     let csv_path = &args[1];
+
+    let root_dir = Path::new(&csv_path).parent().unwrap();
+    //dbg!(&root_dir);
 
     print!("{}", csv_path);
 
