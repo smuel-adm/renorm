@@ -1,7 +1,8 @@
-use std::{env, fs};
+use std::{env, fs, error::Error, process};
 use csv::ReaderBuilder;
 use serde::Deserialize;
 use std::path::Path;
+
 
 #[derive(Debug, Deserialize)]
 struct CSV {
@@ -15,33 +16,53 @@ struct CSV {
 }
 
 
-fn main() {
-    // PARAM 1 CSV file
+fn rename() -> Result<(), Box<dyn Error>> {
+    // The program needs one argument. The readme from the Beuth zip file
     let args: Vec<String> = env::args().collect();
-    //dbg!(args);
+
+    match args.len() {
+        1 => {
+            println!("Error:\nThe program needs one argument. The readme from the Beuth zip file\n\n");
+            process::exit(1);
+        },
+        _ => {}
+    }
     
     let csv_path = &args[1];
-    // dbg!(csv_path);
 
-    // figure out root dir
-    let root_dir = Path::new(&csv_path).parent().unwrap();
-    //dbg!(&root_dir);
+    // Figure out root dir from given readme file. Should never fail.
+    let root_dir = match Path::new(&csv_path).parent() {
+        None => {
+            println!("Error:\nCould not figure out root directory from given file\n\n");
+            process::exit(2);
+        },
+        Some(path) => path
+    };
 
-
-    // parse csv
+    // parse readme
     let mut rdr = ReaderBuilder::new()
         .has_headers(false)
-        .from_path(&csv_path).unwrap();
+        .from_path(&csv_path)?;
     
     // loop through CSV file lines
     for result in rdr.deserialize() {
         // rename files
-        let line: CSV = result.unwrap();
+        let line: CSV = result?;
         let old_filename = root_dir.display().to_string() + "\\" + &line.old_filename + ".pdf";
-        // dbg!(old_filename);
+
         let new_filename = root_dir.display().to_string() + "\\" + &line.new_filename + ".pdf";
-        // dbg!(new_filename);
-        fs::rename(old_filename, new_filename).unwrap();
+
+        fs::rename(old_filename, new_filename)?;
     }
 
+    Ok(())
+
+}
+
+
+fn main() {
+    if let Err(err) = rename() {
+        println!("Error:\n{}", err);
+        process::exit(1);
+    }
 }
