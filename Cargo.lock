@@ -55,14 +55,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
 
 [[package]]
-name = "pdfsort"
-version = "0.1.0"
-dependencies = [
- "csv",
- "serde",
-]
-
-[[package]]
 name = "proc-macro2"
 version = "1.0.47"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -85,6 +77,14 @@ name = "regex-automata"
 version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6c230d73fb8d8c1b9c0b3135c5142a8acee3a0558fb8db5cf1cb65f8d7862132"
+
+[[package]]
+name = "renorm"
+version = "0.1.0"
+dependencies = [
+ "csv",
+ "serde",
+]
 
 [[package]]
 name = "ryu"

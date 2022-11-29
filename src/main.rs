@@ -7,11 +7,11 @@ use std::path::Path;
 struct CSV {
     // 9123917,45756807,de,DIN EN ISO 4759-1,200104,PDF
     old_filename: String,
-    value1: String,
-    lang: String,
+    _value1: String,
+    _lang: String,
     new_filename: String,
-    value2: String,
-    extension: String,
+    _value2: String,
+    _extension: String,
 }
 
 
